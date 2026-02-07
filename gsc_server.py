@@ -1460,5 +1460,19 @@ Amin combines technical SEO knowledge with programming skills to create innovati
     return creator_info
 
 if __name__ == "__main__":
-    # Start the MCP server on stdio transport
-    mcp.run(transport="stdio")
+    transport = os.environ.get("MCP_TRANSPORT", "stdio").lower()
+    host = os.environ.get("MCP_HOST", "127.0.0.1")
+    port_env = os.environ.get("MCP_PORT", "3001")
+    try:
+        port = int(port_env)
+    except ValueError:
+        raise ValueError(f"MCP_PORT must be an integer, got {port_env!r}")
+
+    if transport == "stdio":
+        mcp.run(transport="stdio")
+    elif transport in {"sse", "http"}:
+        mcp.run(transport="sse", host=host, port=port)
+    else:
+        raise ValueError(
+            "Unsupported MCP_TRANSPORT. Use 'stdio' (default) or 'sse'."
+        )
