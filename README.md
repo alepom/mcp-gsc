@@ -306,6 +306,29 @@ Claude will use the GSC tools to fetch the data, present it in an easy-to-unders
 
 ---
 
+## Run Locally with HTTP (for ngrok or remote access)
+
+By default, the server runs on `stdio` transport for Claude Desktop. If you want an HTTP endpoint
+for tools like **ngrok**, start the server with the SSE transport and a port (default `3001`).
+
+```bash
+# From the repo root, with your virtualenv activated
+export MCP_TRANSPORT=sse
+export MCP_HOST=127.0.0.1
+export MCP_PORT=3001
+python gsc_server.py
+```
+
+Then expose it with ngrok:
+
+```bash
+ngrok http 3001
+```
+
+> Tip: set `MCP_HOST=0.0.0.0` if you need to bind on all interfaces.
+
+---
+
 ## Data Visualization Capabilities
 
 Claude can help you visualize your GSC data in various ways:
